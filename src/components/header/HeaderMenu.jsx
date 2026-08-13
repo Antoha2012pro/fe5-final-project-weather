@@ -20,10 +20,9 @@ const HeaderMenu = ({ isMenuOpen, setIsMenuOpen }) => {
           <HeaderNav
             isMenuOpen={isMenuOpen}
             setIsMenuOpen={setIsMenuOpen}
-            isMenu={true}
           />
 
-          <HeaderSign isMenu={true} />
+          <HeaderSign />
         </Container>
       </div>
     </div>

@@ -25,7 +25,7 @@ const HeroSearchBar = ({ onAddCity }) => {
         className="min-w-0 flex-1 bg-transparent px-7.25 text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
       />
       <button type="submit" className="flex w-11.25 justify-center items-center shrink-0 border-l-2 bg-brand text-black border-black hover:bg-brand-hover cursor-pointer">
-        <Search className="text-[20px]" />
+        <Search className="text-[20px] stroke-3" />
       </button>
     </form>
   );

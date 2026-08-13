@@ -16,7 +16,7 @@ const HeaderMenuButton = ({ onClick, isMenuOpen }) => {
         size={15}
         className={cn(
           "transition-transform duration-300",
-          isMenuOpen && "rotate-180",
+          isMenuOpen && "rotate-270",
         )}
       />
     </button>

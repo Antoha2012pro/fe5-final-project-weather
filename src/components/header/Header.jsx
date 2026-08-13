@@ -31,8 +31,8 @@ const Header = () => {
         <Container className="flex items-center justify-between">
           <Logo className='w-8.5 md:w-13.5 site-xl:w-20.5' />
 
-          <HeaderNav />
-          <HeaderSign />
+          <HeaderNav className="hidden md:flex" />
+          <HeaderSign className="hidden md:flex" />
           <HeaderMenuButton onClick={toggleMenu} isMenuOpen={isMenuOpen} />
         </Container>
       </header>
