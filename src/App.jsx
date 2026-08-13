@@ -1,8 +1,17 @@
 import React from "react";
-import "./App.css";
+import Container from "./components/ui/Container";
+import Header from "./components/header/Header";
+import Hero from "./components/hero/Hero";
 
 const App = () => {
-  return <div></div>;
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+      </main>
+    </>
+  );
 };
 
 export default App;

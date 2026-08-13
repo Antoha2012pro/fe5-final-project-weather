@@ -1,8 +1,16 @@
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
+// vite.config.js
 
-// https://vite.dev/config/
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import { webfontDl } from "vite-plugin-webfont-dl";
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    webfontDl([
+      "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@400;500;600;700&display=swap",
+    ]),
+  ],
 });
