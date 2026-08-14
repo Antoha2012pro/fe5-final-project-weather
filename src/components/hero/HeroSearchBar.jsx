@@ -15,7 +15,7 @@ const HeroSearchBar = ({ onAddCity }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex h-10.5 overflow-hidden bg-box rounded-[10px] max-w-156.25 w-full"
+      className="flex h-8 md:h-10.5 overflow-hidden bg-box rounded-[10px] max-w-156.25 w-full"
     >
       <input
         type="text"
@@ -24,8 +24,8 @@ const HeroSearchBar = ({ onAddCity }) => {
         placeholder="Search location..."
         className="min-w-0 flex-1 bg-transparent px-7.25 text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
       />
-      <button type="submit" className="flex w-11.25 justify-center items-center shrink-0 border-l-2 bg-brand text-black border-black hover:bg-brand-hover cursor-pointer">
-        <Search className="text-[20px] stroke-3" />
+      <button type="submit" className="flex w-11.25 justify-center items-center shrink-0 border-l-4 md:border-l-2 bg-brand text-black border-black hover:bg-brand-hover cursor-pointer">
+        <Search className="md:text-[20px] text-[16px] stroke-3" />
       </button>
     </form>
   );
