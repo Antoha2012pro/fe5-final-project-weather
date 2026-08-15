@@ -27,12 +27,12 @@ const Header = () => {
 
   return (
     <>
-      <header className="relative z-10 py-3.5 md:py-3.75">
+      <header className="relative z-10 py-3.5 site-md:py-3.75">
         <Container className="flex items-center justify-between">
-          <Logo className='w-10 md:w-13.5 site-xl:w-20.5' />
+          <Logo className='w-10 site-md:w-13.5 site-xl:w-20.5' />
 
-          <HeaderNav className="hidden md:flex" />
-          <HeaderSign className="hidden md:flex" />
+          <HeaderNav className="hidden site-md:flex" />
+          <HeaderSign className="hidden site-md:flex" />
           <HeaderMenuButton onClick={toggleMenu} isMenuOpen={isMenuOpen} />
         </Container>
       </header>

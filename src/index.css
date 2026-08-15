@@ -5,6 +5,7 @@
   --font-alternates:
     "Montserrat Alternates", "Montserrat", ui-sans-serif, system-ui, sans-serif;
 
+  --breakpoint-site-md: 42.125rem;
   --breakpoint-site-xl: 75rem;
   
   /* Brand & surface colors */
@@ -18,6 +19,16 @@
   /* Text colors */
   --color-placeholder: #878787;
   --color-placeholder-soft: #ababab;
+  
+  --animate-like: heart-beat 0.45s ease-in-out forwards;
+
+  @keyframes heart-beat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.3); }
+    45% { transform: scale(0.9); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
 }
 
 body {

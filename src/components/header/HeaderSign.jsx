@@ -5,7 +5,7 @@ import HeaderSignUpButton from './HeaderSignUpButton'
 
 const HeaderSign = ({className = ''}) => {
   return (
-    <div className={cn('items-center flex flex-col md:flex-row gap-3.75 md:gap-6.25 site-xl:gap-7.25', className)}>
+    <div className={cn('items-center flex flex-col site-md:flex-row gap-3.75 site-md:gap-6.25 site-xl:gap-7.25', className)}>
        <HeaderAvatar />
        <HeaderSignUpButton />
     </div>

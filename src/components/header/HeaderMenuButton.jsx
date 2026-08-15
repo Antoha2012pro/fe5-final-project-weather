@@ -6,7 +6,7 @@ const HeaderMenuButton = ({ onClick, isMenuOpen }) => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center md:hidden"
+      className="flex items-center site-md:hidden"
     >
       <span className="font-alternates text-[10px] font-medium">
         Menu
