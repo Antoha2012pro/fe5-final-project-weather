@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import DaysItem from "./DaysItem";
+import { useCities } from "../../utils/contexts/citiesContext";
 
-const DaysItems = ({ cities, setCities }) => {
-  const [isHourlyVisible, setIsHourlyVisible] = useState(false);
-  const [isWeeklyVisible, setIsWeeklyVisible] = useState(false);
+const DaysItems = () => {
+  const { cities, setCities, weatherDetails, setWeatherDetails } = useCities();
 
   const handleLike = (id) => {
     setCities((prevCities) =>
@@ -20,11 +20,16 @@ const DaysItems = ({ cities, setCities }) => {
   //     }]))
   //   }
 
-  const handleHourly = () => {};
+  const handleCurrentVisible = (id) => {
+    setWeatherDetails({
+      type: "current",
+      cityId: id,
+    });
+  };
 
-  const handleWeekly = () => {};
+  const handleHourlyVisible = () => {};
 
-  console.log(cities);
+  const handleEightDaysVisible = () => {};
 
   return (
     <ul
@@ -42,6 +47,9 @@ const DaysItems = ({ cities, setCities }) => {
             ${index === 1 ? "hidden site-md:block" : ""} 
             ${index === 2 ? "hidden site-xl:block" : ""}
           `}
+            onVisibleCurrent={handleCurrentVisible}
+            onVisibleHourly={handleHourlyVisible}
+            onVisibleEightDays={handleEightDaysVisible}
           />
         );
       })}

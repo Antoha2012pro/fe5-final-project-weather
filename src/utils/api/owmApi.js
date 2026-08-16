@@ -1,9 +1,34 @@
-export const fetchOwmData = async ({ lat = "20", lon = "20"}) => {
-    try {
-        const data = axios.get('https://api.openweathermap.org/data/2.5/weather?lat=20&lon=20&appid=7213143cbd4f174b431dca2af5390707',);
+import axios from "axios";
 
-        console.log(data);
-    } catch (error) {
-        console.log(error);
-    }
-}
+const API_KEY = import.meta.env.VITE_OWM_KEY;
+
+export const searchCities = async (query) => {
+  const { data } = await axios.get(
+    "https://api.openweathermap.org/geo/1.0/direct",
+    {
+      params: {
+        q: query,
+        limit: 5,
+        appid: API_KEY,
+      },
+    },
+  );
+
+  return data;
+};
+
+export const fetchCurrentWeather = async ({ lat, lon }) => {
+  const { data } = await axios.get(
+    "https://api.openweathermap.org/data/2.5/weather",
+    {
+      params: {
+        lat,
+        lon,
+        units: "metric",
+        appid: API_KEY,
+      },
+    },
+  );
+
+  return data;
+};

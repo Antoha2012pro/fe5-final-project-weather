@@ -2,9 +2,28 @@ import React from "react";
 import Container from "../ui/Container";
 import { getHeroDate } from "../../utils/dateTime";
 import HeroSearchBar from "./HeroSearchBar";
+import { useCities } from "../../utils/contexts/citiesContext";
 
 const Hero = () => {
   const { day, weekday, monthYear } = getHeroDate();
+  const { cities, setCities } = useCities();
+
+  const handleAddCity = (newCity) => {
+    setCities((prevCities) => {
+      const isDuplicate = prevCities.some(
+        (city) => city.lat === newCity.lat && city.lon === newCity.lon,
+      );
+
+      if (isDuplicate) {
+        alert("This city has already been added.");
+        return prevCities;
+      }
+
+      return [...prevCities, newCity];
+    });
+  };
+
+  console.log(cities);
 
   return (
     <section
@@ -59,7 +78,7 @@ const Hero = () => {
             {weekday}, {day}
           </p>
         </div>
-        <HeroSearchBar onAddCity={() => {}} />
+        <HeroSearchBar onAddCity={handleAddCity} />
       </Container>
     </section>
   );
