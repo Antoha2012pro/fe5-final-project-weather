@@ -61,7 +61,7 @@ const DaysItem = ({
           {city?.temperature?.celsius ?? ""}℃
         </h2>
       </div>
-      <div className="flex justify-between items-center flex-wrap px-4.25 site-md:px-0">
+      <div className="flex justify-between items-center flex-wrap px-4.25 site-md:px-0 gap-y-4">
         <div className="flex gap-3.5 site-xl:gap-4 items-center">
           <button className="size-6 site-xl:size-7.5" onClick={refreshCities}>
             <RotateCw className="w-full h-full" />
