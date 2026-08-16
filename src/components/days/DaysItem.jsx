@@ -3,6 +3,7 @@ import React from "react";
 import ButtonBrand from "../ui/ButtonBrand";
 import { cn } from "../../utils/cn";
 import { weatherIcon } from "../../utils/weatherIcons";
+import { useCities } from "../../utils/contexts/citiesContext";
 
 const DaysItem = ({
   city,
@@ -11,9 +12,12 @@ const DaysItem = ({
   onVisibleCurrent,
   onVisibleHourly,
   onVisibleEightDays,
+  onDeleteCity
 }) => {
+  const { refreshCities } = useCities();
+  
   return (
-    <li
+    <div
       className={cn(
         "w-full max-w-full site-md:max-w-[262px] site-xl:max-w-[320px] bg-panel rounded-[20px] pt-3.75 px-3.75 pb-5 site-md:pt-3 site-md:px-4.25 site-md:pb-4.25 site-xl:pt-3.75 site-xl:pb-5 site-xl:px-5 shrink-0",
         className,
@@ -28,7 +32,7 @@ const DaysItem = ({
           {city?.time || ""}
         </p>
       </div>
-      <div className="px-6.75 site-md:px-2.25 site-xl:px-3 flex justify-center md:justify-between flex-wrap items-center gap-2 md:gap-0 text-[10px] font-medium mb-3 site-xl:mb-3.75">
+      <div className="px-6.75 site-md:px-2.25 site-xl:px-3 flex justify-center site-md:justify-between flex-wrap items-center gap-2 site-md:gap-0 text-[10px] font-medium mb-3 site-xl:mb-3.75">
         <ButtonBrand
           className="py-1.5 px-2.75 site-xl:py-2 site-xl:px-4.5"
           onClick={() => {}}
@@ -59,7 +63,7 @@ const DaysItem = ({
       </div>
       <div className="flex justify-between items-center flex-wrap px-4.25 site-md:px-0">
         <div className="flex gap-3.5 site-xl:gap-4 items-center">
-          <button className="size-6 site-xl:size-7.5">
+          <button className="size-6 site-xl:size-7.5" onClick={refreshCities}>
             <RotateCw className="w-full h-full" />
           </button>
           <button
@@ -80,11 +84,11 @@ const DaysItem = ({
         >
           See more
         </ButtonBrand>
-        <button className="size-6 site-xl:size-7.5">
+        <button className="size-6 site-xl:size-7.5" onClick={() => onDeleteCity(city.id)}>
           <Trash2 className="w-full h-full" />
         </button>
       </div>
-    </li>
+    </div>
   );
 };
 

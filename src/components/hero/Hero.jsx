@@ -6,7 +6,7 @@ import { useCities } from "../../utils/contexts/citiesContext";
 
 const Hero = () => {
   const { day, weekday, monthYear } = getHeroDate();
-  const { cities, setCities } = useCities();
+  const { cities, setCities, maxCities } = useCities();
 
   const handleAddCity = (newCity) => {
     setCities((prevCities) => {
@@ -16,6 +16,11 @@ const Hero = () => {
 
       if (isDuplicate) {
         alert("This city has already been added.");
+        return prevCities;
+      }
+
+      if (prevCities.length >= maxCities) {
+        alert("Можно добавить максимум 6 городов");
         return prevCities;
       }
 

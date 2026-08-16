@@ -2,6 +2,7 @@ import axios from "axios";
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { formatDate, formatTime, formatWeekday } from "../../utils/dateTime";
+import { useCities } from "../../utils/contexts/citiesContext";
 
 const API_KEY = import.meta.env.VITE_OWM_KEY;
 
@@ -9,6 +10,8 @@ const HeroSearchBar = ({ onAddCity }) => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { cities, maxCities } = useCities();
 
   const handleSelectCity = async (city) => {
     try {
@@ -150,6 +153,8 @@ const HeroSearchBar = ({ onAddCity }) => {
     };
   }, [query]);
 
+  const isLimitReached = cities.length >= maxCities;
+
   return (
     <div className="relative w-full max-w-156.25">
       <form
@@ -160,13 +165,16 @@ const HeroSearchBar = ({ onAddCity }) => {
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search location..."
+          disabled={isLimitReached}
+          placeholder={
+            isLimitReached ? "Maximum 6 cities" : "Search location..."
+          }
           className="min-w-0 flex-1 bg-transparent px-7.25 text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
         />
 
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || isLimitReached}
           className="flex w-11.25 shrink-0 cursor-pointer items-center justify-center border-l-4 border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 site-md:border-l-2"
         >
           <Search className="h-4 w-4 stroke-3 site-md:h-5 site-md:w-5" />

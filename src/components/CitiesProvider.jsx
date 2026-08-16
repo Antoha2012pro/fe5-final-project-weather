@@ -4,6 +4,8 @@ import { loadCities } from "../utils/saveCities";
 import { fetchCurrentWeather } from "../utils/api/owmApi";
 import { formatDate, formatTime, formatWeekday } from "../utils/dateTime";
 
+const MAX_CITIES = 6;
+
 const CitiesProvider = ({ children }) => {
   const [cities, setCities] = useState(loadCities);
 
@@ -13,10 +15,6 @@ const CitiesProvider = ({ children }) => {
   });
 
   const citiesRef = useRef(cities);
-
-  useEffect(() => {
-    citiesRef.current = cities;
-  }, [cities]);
 
   const refreshCities = async () => {
     const currentCities = citiesRef.current;
@@ -60,6 +58,8 @@ const CitiesProvider = ({ children }) => {
               speed: weatherData.wind.speed,
               visibility: weatherData.visibility,
             },
+
+            updatedAt: Date.now(),
           };
         } catch (error) {
           console.error(`Не удалось обновить ${city.city}:`, error);
@@ -70,44 +70,75 @@ const CitiesProvider = ({ children }) => {
     );
 
     setCities(updatedCities);
+
+    console.log("Weather updated:", new Date().toLocaleTimeString());
   };
 
   useEffect(() => {
-    refreshCities();
+    let timeoutId;
 
-    const now = new Date();
-    const nextUpdate = new Date(now);
+    const getTimeUntilNextUpdate = () => {
+      const now = new Date();
+      const nextUpdate = new Date(now);
 
-    nextUpdate.setSeconds(0);
-    nextUpdate.setMilliseconds(0);
+      nextUpdate.setSeconds(0);
+      nextUpdate.setMilliseconds(0);
 
-    if (now.getMinutes() < 30) {
-      nextUpdate.setMinutes(30);
-    } else {
-      nextUpdate.setHours(now.getHours() + 1);
-      nextUpdate.setMinutes(0);
-    }
+      if (now.getMinutes() < 30) {
+        nextUpdate.setMinutes(30);
+      } else {
+        nextUpdate.setHours(now.getHours() + 1);
+        nextUpdate.setMinutes(0);
+      }
 
-    const timeUntilNextUpdate = nextUpdate.getTime() - now.getTime();
+      return nextUpdate.getTime() - now.getTime();
+    };
 
-    let intervalId;
+    const scheduleNextUpdate = () => {
+      const delay = getTimeUntilNextUpdate();
 
-    const timeoutId = setTimeout(() => {
-      refreshCities();
+      timeoutId = setTimeout(async () => {
+        await refreshCities();
 
-      intervalId = setInterval(
-        () => {
-          refreshCities();
-        },
-        30 * 60 * 1000,
+        scheduleNextUpdate();
+      }, delay);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== "visible") return;
+
+      const cities = citiesRef.current;
+
+      if (cities.length === 0) return;
+
+      const oldestUpdate = Math.min(
+        ...cities.map((city) => city.updatedAt || 0),
       );
-    }, timeUntilNextUpdate);
+
+      const thirtyMinutes = 30 * 60 * 1000;
+
+      const isStale = Date.now() - oldestUpdate >= thirtyMinutes;
+
+      if (isStale) {
+        refreshCities();
+      }
+    };
+
+    refreshCities();
+    scheduleNextUpdate();
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       clearTimeout(timeoutId);
-      clearInterval(intervalId);
+
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
+
+  useEffect(() => {
+    citiesRef.current = cities;
+  }, [cities]);
 
   return (
     <CitiesContext.Provider
@@ -116,6 +147,7 @@ const CitiesProvider = ({ children }) => {
         setCities,
         weatherDetails,
         setWeatherDetails,
+        maxCities: MAX_CITIES,
       }}
     >
       {children}
