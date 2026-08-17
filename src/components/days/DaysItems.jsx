@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import DaysItem from "./DaysItem";
-import { useCities } from "../../utils/contexts/citiesContext";
+import { useCities } from "../../shared/contexts/citiesContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../shared/utils/cn";
 
 const DaysItems = () => {
   const [swiper, setSwiper] = useState(null);

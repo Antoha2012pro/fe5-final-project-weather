@@ -2,7 +2,7 @@ import React from "react";
 import HeaderNav from "./HeaderNav";
 import Container from "../ui/Container";
 import HeaderSign from "./HeaderSign";
-import { cn } from "../../utils/cn";
+import { cn } from "../../shared/utils/cn";
 
 const HeaderMenu = ({ isMenuOpen, setIsMenuOpen }) => {
   return (

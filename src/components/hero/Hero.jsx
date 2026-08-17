@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "../ui/Container";
-import { getHeroDate } from "../../utils/dateTime";
+import { getHeroDate } from "../../shared/utils/dateTime";
 import HeroSearchBar from "./HeroSearchBar";
-import { useCities } from "../../utils/contexts/citiesContext";
+import { useCities } from "../../shared/contexts/citiesContext";
 
 const Hero = () => {
   const { day, weekday, monthYear } = getHeroDate();

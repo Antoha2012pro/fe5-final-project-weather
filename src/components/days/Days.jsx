@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import DaysItems from "./DaysItems";
 import Container from "../ui/Container";
-import { useCities } from "../../utils/contexts/citiesContext";
-import { saveCities } from "../../utils/saveCities";
+import { useCities } from "../../shared/contexts/citiesContext";
+import { saveCities } from "../../shared/utils/saveCities";
 
 const Days = () => {
   const { cities } = useCities();

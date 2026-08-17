@@ -1,9 +1,11 @@
 import { Heart, RotateCw, Trash2 } from "lucide-react";
 import React from "react";
 import ButtonBrand from "../ui/ButtonBrand";
-import { cn } from "../../utils/cn";
-import { weatherIcon } from "../../utils/weatherIcons";
-import { useCities } from "../../utils/contexts/citiesContext";
+import { cn } from "../../shared/utils/cn";
+import { weatherIcon } from "../../shared/utils/weatherIcons";
+import { useCities } from "../../shared/contexts/citiesContext";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const DaysItem = ({
   city,
@@ -12,10 +14,32 @@ const DaysItem = ({
   onVisibleCurrent,
   onVisibleHourly,
   onVisibleEightDays,
-  onDeleteCity
+  onDeleteCity,
 }) => {
-  const { refreshCities } = useCities();
-  
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const { setWeatherDetails, refreshCities } = useCities();
+
+  const handleRefresh = (e) => {
+    if (isRefreshing) return;
+    setIsRefreshing(true);
+    refreshCities(e);
+  };
+
+  useEffect(() => {
+    return () => {
+      setWeatherDetails((prev) => {
+        if (prev?.cityId === city.id) {
+          return {
+            type: null,
+            cityId: null,
+          };
+        }
+        return prev;
+      });
+    };
+  }, []);
+
   return (
     <div
       className={cn(
@@ -53,26 +77,36 @@ const DaysItem = ({
       </div>
       <div className="flex flex-col gap-6.25 site-xl:gap-3.75 items-center mb-11 site-md:mb-8.5 site-xl:mb-9.5">
         <img
-          src={weatherIcon(city.description)}
-          alt={city.description}
+          src={weatherIcon(city?.description)}
+          alt={city?.description}
           className="w-full max-w-20.75 max-h-20.75 site-md:max-w-19 site-md:max-h-19 site-xl:max-w-30 site-xl:max-h-30 h-full object-cover"
         />
         <h2 className="text-[24px] site-xl:text-[32px] font-medium">
-          {city?.temperature?.celsius ?? ""}℃
+          {city?.temperature?.celsius ?? ""} ℃
         </h2>
       </div>
       <div className="flex justify-between items-center flex-wrap px-4.25 site-md:px-0 gap-y-4">
         <div className="flex gap-3.5 site-xl:gap-4 items-center">
-          <button className="size-6 site-xl:size-7.5" onClick={refreshCities}>
-            <RotateCw className="w-full h-full" />
+          <button
+            className="size-6 site-xl:size-7.5 flex items-center justify-center group cursor-pointer"
+            onClick={handleRefresh}
+          >
+            <RotateCw
+              onAnimationEnd={() => setIsRefreshing(false)} // Скидаємо стейт, коли анімація закінчилась
+              className={cn(
+                "text-black w-full h-full cursor-pointer select-none transition-all duration-200 ease-in-out",
+                "group-hover:rotate-30",
+                isRefreshing && "animate-rotate",
+              )}
+            />
           </button>
           <button
-            className="size-6 site-xl:size-7.5"
+            className="size-6 site-xl:size-7.5 flex items-center justify-center group cursor-pointer"
             onClick={() => onLike(city.id)}
           >
             <Heart
               className={cn(
-                "text-red-400 w-full h-full cursor-pointer select-none active:scale-75 transition-all duration-200",
+                "text-red-400 w-full h-full cursor-pointer select-none group-hover:scale-85 group-active:scale-75 transition-all duration-200",
                 city.isLiked && "fill-red-400 animate-like",
               )}
             />
@@ -84,8 +118,11 @@ const DaysItem = ({
         >
           See more
         </ButtonBrand>
-        <button className="size-6 site-xl:size-7.5" onClick={() => onDeleteCity(city.id)}>
-          <Trash2 className="w-full h-full" />
+        <button
+          className="size-6 site-xl:size-7.5 flex items-center justify-center group cursor-pointer"
+          onClick={() => onDeleteCity(city.id)}
+        >
+          <Trash2 className="w-full h-full text-black group-hover:text-red-500 group-hover:rotate-12 group-active:scale-90 transition-all duration-200" />
         </button>
       </div>
     </div>

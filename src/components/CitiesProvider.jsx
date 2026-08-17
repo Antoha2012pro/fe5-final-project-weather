@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CitiesContext } from "../utils/contexts/citiesContext";
-import { loadCities } from "../utils/saveCities";
-import { fetchCurrentWeather } from "../utils/api/owmApi";
-import { formatDate, formatTime, formatWeekday } from "../utils/dateTime";
+import { CitiesContext } from "../shared/contexts/citiesContext";
+import { loadCities } from "../shared/utils/saveCities.js";
+import { fetchCurrentWeather } from "../shared/api/owmApi.js";
+import { formatDate, formatTime, formatWeekday } from "../shared/utils/dateTime.js";
 
 const MAX_CITIES = 6;
 
@@ -146,7 +146,7 @@ const CitiesProvider = ({ children }) => {
         cities,
         setCities,
         weatherDetails,
-        setWeatherDetails,
+        setWeatherDetails,refreshCities,
         maxCities: MAX_CITIES,
       }}
     >

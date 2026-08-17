@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { formatDate, formatTime, formatWeekday } from "../../utils/dateTime";
-import { useCities } from "../../utils/contexts/citiesContext";
+import { formatDate, formatTime, formatWeekday } from "../../shared/utils/dateTime";
+import { useCities } from "../../shared/contexts/citiesContext";
 
 const API_KEY = import.meta.env.VITE_OWM_KEY;
 

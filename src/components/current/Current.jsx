@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "../ui/Container";
-import { useCities } from "../../utils/contexts/citiesContext";
-import { weatherIcon } from "../../utils/weatherIcons";
+import { useCities } from "../../shared/contexts/citiesContext";
+import { weatherIcon } from "../../shared/utils/weatherIcons";
 
 const Current = () => {
   const { cities, weatherDetails } = useCities();
@@ -19,12 +19,11 @@ const Current = () => {
               Feels like
             </p>
             <h3 className="mt-2 mb-4.5 site-md:mb-9.25 site-xl:mb-5.75 site-xl:mt-2.5 text-[14px] site-md:text-[16px] site-xl:text-[32px] font-medium">
-              {" "}
               {city?.info?.feelsLike ?? ""} ℃
             </h3>
             <img
-              src={weatherIcon(city.description)}
-              alt={city.description}
+              src={weatherIcon(city?.description)}
+              alt={city?.description}
               className="w-15 h-15"
             />
           </li>
