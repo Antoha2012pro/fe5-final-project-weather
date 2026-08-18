@@ -47,7 +47,18 @@ const DaysItems = () => {
   const handleEightDaysVisible = () => {};
 
   const handleDeleteCity = (id) => {
-    setCities((prevState) => prevState.filter((city) => city.id !== id));
+    setCities((prevCities) => prevCities.filter((city) => city.id !== id));
+
+    setWeatherDetails((prevDetails) => {
+      if (prevDetails.cityId !== id) {
+        return prevDetails;
+      }
+
+      return {
+        type: null,
+        cityId: null,
+      };
+    });
   };
 
   return (

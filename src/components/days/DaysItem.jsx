@@ -1,11 +1,9 @@
+import React, { useState } from "react";
 import { Heart, RotateCw, Trash2 } from "lucide-react";
-import React from "react";
 import ButtonBrand from "../ui/ButtonBrand";
 import { cn } from "../../shared/utils/cn";
 import { weatherIcon } from "../../shared/utils/weatherIcons";
 import { useCities } from "../../shared/contexts/citiesContext";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const DaysItem = ({
   city,
@@ -18,27 +16,23 @@ const DaysItem = ({
 }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { setWeatherDetails, refreshCities } = useCities();
+  const { refreshCity } = useCities();
 
-  const handleRefresh = (e) => {
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const handleRefresh = async () => {
     if (isRefreshing) return;
-    setIsRefreshing(true);
-    refreshCities(e);
-  };
 
-  useEffect(() => {
-    return () => {
-      setWeatherDetails((prev) => {
-        if (prev?.cityId === city.id) {
-          return {
-            type: null,
-            cityId: null,
-          };
-        }
-        return prev;
-      });
-    };
-  }, []);
+    setIsRefreshing(true);
+
+    try {
+      await Promise.all([refreshCity(city.id), delay(500)]);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   return (
     <div
@@ -88,15 +82,17 @@ const DaysItem = ({
       <div className="flex justify-between items-center flex-wrap px-4.25 site-md:px-0 gap-y-4">
         <div className="flex gap-3.5 site-xl:gap-4 items-center">
           <button
-            className="size-6 site-xl:size-7.5 flex items-center justify-center group cursor-pointer"
+            type="button"
+            disabled={isRefreshing}
+            className="group flex size-6 cursor-pointer items-center justify-center disabled:cursor-wait site-xl:size-7.5"
             onClick={handleRefresh}
           >
             <RotateCw
-              onAnimationEnd={() => setIsRefreshing(false)} // Скидаємо стейт, коли анімація закінчилась
               className={cn(
-                "text-black w-full h-full cursor-pointer select-none transition-all duration-200 ease-in-out",
-                "group-hover:rotate-30",
-                isRefreshing && "animate-rotate",
+                "h-full w-full select-none text-black",
+                isRefreshing
+                  ? "animate-spin [animation-duration:.5s]"
+                  : "transition-transform duration-200 group-hover:rotate-30",
               )}
             />
           </button>

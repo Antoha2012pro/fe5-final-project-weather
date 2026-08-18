@@ -39,17 +39,6 @@
       transform: scale(1);
     }
   }
-
-  --animate-rotate: rotate-reload .5s cubic-bezier(.6,.73,.65,.24) forwards;
-
-  @keyframes rotate-reload {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 }
 
 body {

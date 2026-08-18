@@ -1,10 +1,8 @@
-import axios from "axios";
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { formatDate, formatTime, formatWeekday } from "../../shared/utils/dateTime";
 import { useCities } from "../../shared/contexts/citiesContext";
-
-const API_KEY = import.meta.env.VITE_OWM_KEY;
+import { fetchCurrentWeather, searchCities } from "../../shared/api/owmApi.js";
+import { mapWeatherToCity } from "../../shared/utils/mapWeatherToCity.js";
 
 const HeroSearchBar = ({ onAddCity }) => {
   const [query, setQuery] = useState("");
@@ -17,85 +15,24 @@ const HeroSearchBar = ({ onAddCity }) => {
     try {
       setIsLoading(true);
 
-      const { data: weatherData } = await axios.get(
-        "https://api.openweathermap.org/data/2.5/weather",
-        {
-          params: {
-            lat: city.lat,
-            lon: city.lon,
-            units: "metric",
-            appid: API_KEY,
-          },
-        },
-      );
-
-      // const newCity = {
-      //   id: weatherData?.id || `${city.lat || ""}-${city.lon || ""}`,
-      //   city: city?.name || "",
-      //   country: city?.country || "",
-      //   time: city?.time || "",
-      //   date: {
-      //     date: city?.dt || "",
-      //     day: city?.dt || "",
-      //   },
-      //   img: `https://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon || ""}@2x.png`,
-      //   temperature: {
-      //     celsius: Math.round(weatherData?.main?.temp || ""),
-      //     fahrenheit: "",
-      //   },
-      //   isLiked: false,
-
-      //   lat: city?.lat || "",
-      //   lon: city?.lon || "",
-
-      //   info: {
-      //     feelsLike: weatherData?.main?.feels_like || "",
-      //     tempMin: weatherData?.main?.temp_min || "",
-      //     tempMax: weatherData?.main?.temp_max || "",
-      //     humidity: weatherData?.main?.humidity || "",
-      //     pressure: weatherData?.main?.pressure || "",
-      //     speed: weatherData?.wind?.speed || "",
-      //     visibility: weatherData?.visibility || "",
-      //   }
-      // };
-
-      const newCity = {
-        id: weatherData.id,
-
-        city: city.name,
-        country: city.country,
-
-        time: formatTime(weatherData.dt, weatherData.timezone),
-
-        date: {
-          date: formatDate(weatherData.dt, weatherData.timezone),
-          day: formatWeekday(weatherData.dt, weatherData.timezone),
-        },
-
-        img: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`,
-
-        description: weatherData?.weather[0]?.description || "",
-
-        temperature: {
-          celsius: Math.round(weatherData.main.temp),
-          fahrenheit: Math.round(weatherData.main.temp * 1.8 + 32),
-        },
-
-        isLiked: false,
-
+      const weatherData = await fetchCurrentWeather({
         lat: city.lat,
         lon: city.lon,
+      });
 
-        info: {
-          feelsLike: weatherData.main.feels_like,
-          tempMin: weatherData.main.temp_min,
-          tempMax: weatherData.main.temp_max,
-          humidity: weatherData.main.humidity,
-          pressure: weatherData.main.pressure,
-          speed: weatherData.wind.speed,
-          visibility: weatherData.visibility,
+      const newCity = mapWeatherToCity(
+        {
+          id: weatherData.id,
+          city: city.name,
+          country: city.country,
+
+          isLiked: false,
+
+          lat: city.lat,
+          lon: city.lon,
         },
-      };
+        weatherData,
+      );
 
       onAddCity(newCity);
 
@@ -122,44 +59,28 @@ const HeroSearchBar = ({ onAddCity }) => {
       return;
     }
 
-    const controller = new AbortController();
-
     const timeoutId = setTimeout(async () => {
       try {
-        const { data } = await axios.get(
-          "https://api.openweathermap.org/geo/1.0/direct",
-          {
-            params: {
-              q: query,
-              limit: 5,
-              appid: API_KEY,
-            },
-
-            signal: controller.signal,
-          },
-        );
+        const data = await searchCities(query);
 
         setSearchResults(data);
       } catch (error) {
-        if (error.name !== "CanceledError") {
-          console.error(error);
-        }
+        console.error(error);
       }
     }, 400);
 
     return () => {
       clearTimeout(timeoutId);
-      controller.abort();
     };
   }, [query]);
 
   const isLimitReached = cities.length >= maxCities;
 
   return (
-    <div className="relative w-full max-w-156.25">
+    <div className="relative w-full max-w-156.25 site-md:max-w-[402px] max-w-[174px]">
       <form
         onSubmit={handleSubmit}
-        className="flex h-8 w-full overflow-hidden rounded-[10px] bg-box site-md:h-10.5"
+        className="flex h-6 site-md:h-8 w-full overflow-hidden rounded-[10px] bg-box site-xl:h-10.5"
       >
         <input
           type="text"
@@ -169,15 +90,15 @@ const HeroSearchBar = ({ onAddCity }) => {
           placeholder={
             isLimitReached ? "Maximum 6 cities" : "Search location..."
           }
-          className="min-w-0 flex-1 bg-transparent px-7.25 text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
+          className="min-w-0 flex-1 bg-transparent px-4 site-md:px-7.25 text-[10px] site-xl:text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
         />
 
         <button
           type="submit"
           disabled={isLoading || isLimitReached}
-          className="flex w-11.25 shrink-0 cursor-pointer items-center justify-center border-l-4 border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 site-md:border-l-2"
+          className="flex w-7 site-md:w-9 site-xl:w-11.25 shrink-0 cursor-pointer items-center justify-center border-l-4 border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 site-md:border-l-2"
         >
-          <Search className="h-4 w-4 stroke-3 site-md:h-5 site-md:w-5" />
+          <Search className="size-3 site-md:size-4 site-xl:size-6.25 stroke-3 site-md:h-5 site-md:w-5" />
         </button>
       </form>
 
