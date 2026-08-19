@@ -77,7 +77,7 @@ const HeroSearchBar = ({ onAddCity }) => {
   const isLimitReached = cities.length >= maxCities;
 
   return (
-    <div className="relative w-full max-w-156.25 site-md:max-w-[402px] max-w-[174px]">
+    <div className="relative w-full site-xl:max-w-156.25 site-md:max-w-[402px] max-w-[174px]">
       <form
         onSubmit={handleSubmit}
         className="flex h-6 site-md:h-8 w-full overflow-hidden rounded-[10px] bg-box site-xl:h-10.5"
