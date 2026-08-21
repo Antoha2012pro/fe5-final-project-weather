@@ -79,6 +79,30 @@ export const formatDay = (dt) => {
   });
 };
 
+const MONTH_NAMES = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+export const formatHourlyLabel = (dt, timezone, prevDt) => {
+  const date = new Date((dt + timezone) * 1000);
+
+  const hours24 = date.getUTCHours();
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+  const ampm = hours24 < 12 ? "am" : "pm";
+  const time = `${hours12} ${ampm}`;
+
+  const prevDate =
+    prevDt != null ? new Date((prevDt + timezone) * 1000) : null;
+  const isNewDay = !prevDate || prevDate.getUTCDate() !== date.getUTCDate();
+
+  const dateLabel = isNewDay
+    ? `${MONTH_NAMES[date.getUTCMonth()]} ${date.getUTCDate()}`
+    : null;
+
+  return { time, date: dateLabel };
+};
+
 export const getHeroDate = () => {
   const now = new Date();
 

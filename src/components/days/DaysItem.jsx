@@ -17,7 +17,7 @@ const DaysItem = ({
   city,
   className,
   onLike,
-  onVisibleCurrent,
+  onVisibleSection,
   onVisibleHourly,
   onVisibleEightDays,
   onDeleteCity,
@@ -49,7 +49,7 @@ const DaysItem = ({
       <div className="px-6.75 site-md:px-2.25 site-xl:px-3 flex justify-center site-md:justify-between flex-wrap items-center gap-2 site-md:gap-0 text-[10px] font-medium mb-3 site-xl:mb-3.75">
         <ButtonBrand
           className="py-1.5 px-2.75 site-xl:py-2 site-xl:px-4.5"
-          onClick={() => {}}
+          onClick={() => onVisibleSection(city.id, "hourly")}
         >
           Hourly forecast
         </ButtonBrand>
@@ -116,7 +116,7 @@ const DaysItem = ({
         </div>
         <ButtonBrand
           className="py-2 px-5 site-md:py-1.5 site-md:px-4.75 site-xl:py-2 site-xl:px-6.25"
-          onClick={() => onVisibleCurrent(city.id)}
+          onClick={() => onVisibleSection(city.id, "current")}
         >
           See more
         </ButtonBrand>

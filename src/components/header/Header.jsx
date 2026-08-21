@@ -32,10 +32,10 @@ const Header = () => {
           <Logo className="w-10 site-md:w-13.5 site-xl:w-20.5" />
 
           <HeaderNav
-            className="hidden site-md:flex"
+            className="hidden site-md:flex site-md:ml-14.25 site-xl:ml-27.75"
             setIsMenuOpen={setIsMenuOpen}
           />
-          <HeaderSign className="hidden site-md:flex" />
+          <HeaderSign className="hidden site-md:flex ml-auto" />
           <HeaderMenuButton onClick={toggleMenu} isMenuOpen={isMenuOpen} />
         </Container>
       </header>

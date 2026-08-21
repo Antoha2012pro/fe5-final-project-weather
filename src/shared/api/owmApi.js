@@ -32,3 +32,21 @@ export const fetchCurrentWeather = async ({ lat, lon }) => {
 
   return data;
 };
+
+export const fetchWeatherForecast = async ({ lat, lon }) => {
+  const { data } = await axios.get(
+    "https://api.openweathermap.org/data/2.5/forecast",
+    {
+      params: {
+        lat,
+        lon,
+        units: "metric",
+        lang: "en",
+        exclude: "current,minutely,alerts",
+        appid: API_KEY,
+      },
+    },
+  );
+
+  return data;
+};

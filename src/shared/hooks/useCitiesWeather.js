@@ -1,11 +1,6 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { fetchCurrentWeather } from "../api/owmApi.js";
+import { fetchCurrentWeather, fetchWeatherForecast } from "../api/owmApi.js";
 import { loadCities } from "../utils/saveCities.js";
 import { mapWeatherToCity } from "../utils/mapWeatherToCity.js";
 
@@ -40,7 +35,6 @@ export const useCitiesWeather = () => {
     citiesRef.current = cities;
   }, [cities]);
 
-  // Обновление всех городов
   const refreshCities = useCallback(async () => {
     const currentCities = citiesRef.current;
 
@@ -53,13 +47,14 @@ export const useCitiesWeather = () => {
             lat: city.lat,
             lon: city.lon,
           });
+          const forecast = await fetchWeatherForecast({
+            lat: city.lat,
+            lon: city.lon,
+          });
 
-          return mapWeatherToCity(city, data);
+          return mapWeatherToCity(city, data, forecast);
         } catch (error) {
-          console.error(
-            `Не удалось обновить ${city.city}:`,
-            error,
-          );
+          console.error(`Не вдалося оновити ${city.city}:`, error);
 
           return city;
         }
@@ -67,30 +62,18 @@ export const useCitiesWeather = () => {
     );
 
     const citiesByKey = new Map(
-      updatedCities.map((city) => [
-        cityKey(city),
-        city,
-      ]),
+      updatedCities.map((city) => [cityKey(city), city]),
     );
 
     setCities((prevCities) =>
-      prevCities.map(
-        (city) =>
-          citiesByKey.get(cityKey(city)) ?? city,
-      ),
+      prevCities.map((city) => citiesByKey.get(cityKey(city)) ?? city),
     );
 
-    console.log(
-      "Weather updated:",
-      new Date().toLocaleTimeString(),
-    );
+    console.log("Weather updated:", new Date().toLocaleTimeString());
   }, []);
 
-  // Обновление одного города
   const refreshCity = useCallback(async (id) => {
-    const city = citiesRef.current.find(
-      (city) => city.id === id,
-    );
+    const city = citiesRef.current.find((city) => city.id === id);
 
     if (!city) return;
 
@@ -99,22 +82,18 @@ export const useCitiesWeather = () => {
         lat: city.lat,
         lon: city.lon,
       });
+      const forecast = await fetchWeatherForecast({
+        lat: city.lat,
+        lon: city.lon,
+      });
 
-      const updatedCity = mapWeatherToCity(
-        city,
-        data,
-      );
+      const updatedCity = mapWeatherToCity(city, data, forecast);
 
       setCities((prevCities) =>
-        prevCities.map((city) =>
-          city.id === id ? updatedCity : city,
-        ),
+        prevCities.map((city) => (city.id === id ? updatedCity : city)),
       );
     } catch (error) {
-      console.error(
-        `Не удалось обновить ${city.city}:`,
-        error,
-      );
+      console.error(`Не вдалося оновити ${city.city}:`, error);
     }
   }, []);
 
@@ -130,9 +109,7 @@ export const useCitiesWeather = () => {
     };
 
     const handleVisibilityChange = () => {
-      if (
-        document.visibilityState !== "visible"
-      ) {
+      if (document.visibilityState !== "visible") {
         return;
       }
 
@@ -141,13 +118,10 @@ export const useCitiesWeather = () => {
       if (currentCities.length === 0) return;
 
       const oldestUpdate = Math.min(
-        ...currentCities.map(
-          (city) => city.updatedAt || 0,
-        ),
+        ...currentCities.map((city) => city.updatedAt || 0),
       );
 
-      const isStale =
-        Date.now() - oldestUpdate >= HALF_HOUR;
+      const isStale = Date.now() - oldestUpdate >= HALF_HOUR;
 
       if (isStale) {
         refreshCities();
@@ -157,18 +131,12 @@ export const useCitiesWeather = () => {
     refreshCities();
     scheduleNextUpdate();
 
-    document.addEventListener(
-      "visibilitychange",
-      handleVisibilityChange,
-    );
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       clearTimeout(timeoutId);
 
-      document.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange,
-      );
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [refreshCities]);
 

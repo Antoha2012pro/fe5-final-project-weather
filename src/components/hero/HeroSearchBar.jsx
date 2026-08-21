@@ -87,7 +87,7 @@ const HeroSearchBar = ({ onAddCity }) => {
     <div className="relative w-full site-xl:max-w-156.25 site-md:max-w-[402px] max-w-[174px]">
       <form
         onSubmit={handleSubmit}
-        className="flex h-6 site-md:h-8 w-full overflow-hidden rounded-[10px] bg-box site-xl:h-10.5"
+        className="flex h-[15px] site-md:h-[27px] site-xl:h-[42px] w-full overflow-hidden rounded-[10px] bg-box site-xl:h-10.5"
       >
         <input
           type="text"
@@ -97,13 +97,13 @@ const HeroSearchBar = ({ onAddCity }) => {
           placeholder={
             isLimitReached ? "Maximum 6 cities" : "Search location..."
           }
-          className="min-w-0 flex-1 bg-transparent px-4 site-md:px-7.25 text-[10px] site-xl:text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
+          className="min-w-0 flex-1 bg-transparent px-2.75 site-md:px-[17px] site-xl:px-[29px] text-[6px] site-md:text-[10px] site-xl:text-[14px] font-medium text-black placeholder:text-placeholder focus:outline-none"
         />
 
         <button
           type="submit"
           disabled={isLoading || isLimitReached}
-          className="flex w-7 site-md:w-9 site-xl:w-11.25 shrink-0 cursor-pointer items-center justify-center border-l-4 border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 site-md:border-l-2"
+          className="flex w-[17px] site-md:w-[29px] site-xl:w-[45px] shrink-0 cursor-pointer items-center justify-center border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 border-l-2"
           onClick={() => {
             if (isSearchActive) {
               setQuery("");
@@ -116,7 +116,7 @@ const HeroSearchBar = ({ onAddCity }) => {
         >
           <MorphIcon
             icon={isSearchActive ? X : Search}
-            className="size-3 site-md:size-5 site-xl:size-6"
+            className="size-2.25 site-md:size-[17px] site-xl:size-[25px]"
           />
           {/* <Search className="size-3 site-md:size-4 site-xl:size-6.25 stroke-3 site-md:h-5 site-md:w-5" /> */}
         </button>

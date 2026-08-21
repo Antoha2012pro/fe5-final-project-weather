@@ -1,7 +1,8 @@
 import { formatDate, formatTime, formatWeekday } from "./dateTime.js";
 
-export const mapWeatherToCity = (city, data) => ({
+export const mapWeatherToCity = (city, data, forecast = undefined) => ({
   ...city,
+  timezone: data.timezone,
   time: formatTime(data.dt, data.timezone),
   date: {
     date: formatDate(data.dt, data.timezone),
@@ -14,13 +15,17 @@ export const mapWeatherToCity = (city, data) => ({
     fahrenheit: Math.round(data.main.temp * 1.8 + 32),
   },
   info: {
-    feelsLike: data.main.feels_like,
-    tempMin: data.main.temp_min,
-    tempMax: data.main.temp_max,
-    humidity: data.main.humidity,
-    pressure: data.main.pressure,
-    speed: data.wind.speed,
-    visibility: data.visibility,
+    feelsLike: data.main.feels_like ?? "",
+    tempMin: data.main.temp_min ?? "",
+    tempMax: data.main.temp_max ?? "",
+    humidity: data.main.humidity ?? "",
+    pressure: data.main.pressure ?? "",
+    speed: data.wind.speed ?? "",
+    visibility: data.visibility ?? "",
   },
   updatedAt: Date.now(),
+  forecast: {
+    hourly: forecast?.list ?? [],
+    eightDays: [],
+  },
 });

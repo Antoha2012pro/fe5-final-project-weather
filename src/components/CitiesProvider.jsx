@@ -10,6 +10,7 @@ const CitiesProvider = ({ children }) => {
 
   const [weatherDetails, setWeatherDetails] = useState({
     type: null,
+    visibleTypes: [],
     cityId: null,
   });
 

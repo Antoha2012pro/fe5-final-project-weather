@@ -11,7 +11,7 @@ const Current = () => {
   console.log(city);
 
   return (
-    <section className="">
+    <section className="pb-20">
       <Container>
         <ul className="bg-panel rounded-[15px] py-8.75 px-4 site-md:p-7.5 site-xl:py-10 site-md:px-19.25 grid justify-items-center grid-cols-1 site-md:grid-cols-3 gap-y-8.75 site-md:gap-y-7.5 site-md:gap-x-5.5 site-xl:gap-y-10 site-xl:gap-x-14.5">
           <li className="bg-box rounded-[10px] pt-3.75 site-md:pt-5 h-40 site-md:h-50 site-xl:h-54.25 flex flex-col items-center w-full max-w-[207px] site-md:max-w-full">

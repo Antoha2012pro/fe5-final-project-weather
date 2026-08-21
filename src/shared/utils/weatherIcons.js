@@ -20,6 +20,9 @@ const icons = {
   "moderate rain":
     "https://maps.gstatic.com/weather/v1/showers.svg",
 
+  "heavy intensity rain":
+    "https://maps.gstatic.com/weather/v1/showers.svg",
+
   rain:
     "https://maps.gstatic.com/weather/v1/showers.svg",
 

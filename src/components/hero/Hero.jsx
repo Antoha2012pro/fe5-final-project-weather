@@ -32,19 +32,19 @@ const Hero = () => {
 
   return (
     <section
-      className="pt-12.5 pb-25 site-md:pt-10 site-md:pb-10 site-xl:pt-20 site-xl:pb-20 relative w-full bg-cover bg-position-[center_67%]"
+      className="pt-12.5 pb-25 site-md:py-10 site-xl:py-20 relative w-full bg-cover bg-position-[center_67%]"
       style={{ backgroundImage: "url('/assets/hero.webp')" }}
     >
       <div className="absolute inset-0 bg-black/48" />
       <Container className="relative flex flex-col items-center z-20">
-        <h2 className="text-[14px] font-semibold text-white text-center site-md:text-[30px] site-xl:text-[40px]">
+        <h2 className="text-[14px] font-semibold text-white text-center site-md:text-[20px] site-xl:text-[40px]">
           Weather dashboard
         </h2>
         <div
-          className="grid w-full site-xl:max-w-[800px] max-w-[610px] grid-cols-[2px_1fr] grid-rows-[auto_auto] gap-x-6.25 gap-y-5 text-white text-[10px] mt-[35px] mb-[48px] site-md:grid-cols-[1fr_2px_1fr] site-md:grid-rows-1 site-md:items-start site-md:gap-13 site-md:mt-[40px] site-md:mb-[64px] site-md:text-[14px] site-xl:mt-[80px] site-xl:mb-[80px] site-xl:text-[24px]"
+          className="grid w-full site-xl:max-w-[800px] site-md:max-w-[500px] max-w-[161px] grid-cols-[2px_1fr] grid-rows-[auto_auto] gap-x-6.25 gap-y-5 site-md:gap-6 site-xl:gap-13 text-white text-[10px] mt-[35px] mb-[48px] site-md:grid-cols-[1fr_2px_1fr] site-md:grid-rows-1 site-md:items-start site-md:mt-[40px] site-md:mb-[64px] site-md:text-[14px] site-xl:my-[80px] site-xl:text-[24px]"
         >
           <div
-            className="col-start-1 row-start-1 row-span-2 h-full w-[2px] bg-white site-md:col-start-2 site-md:row-start-1 site-md:row-span-1 site-md:h-[110px] site-md:w-[3px] site-xl:h-[144px]"
+            className="col-start-1 row-start-1 row-span-2 h-full w-[2px] bg-white site-md:col-start-2 site-md:row-start-1 site-md:row-span-1 site-md:h-[110px] site-xl:h-[144px] site-md:w-[3px] site-xl:h-[144px]"
           />
 
           <p

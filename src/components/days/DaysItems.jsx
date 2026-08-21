@@ -35,16 +35,13 @@ const DaysItems = () => {
   //     }]))
   //   }
 
-  const handleCurrentVisible = (id) => {
-    setWeatherDetails({
-      type: "current",
+  const handleChangeVisibility = (id, visibleType) => {
+    setWeatherDetails((prev) => ({
+      // type: "current",
+      visibleTypes: [...prev.visibleTypes, visibleType],
       cityId: id,
-    });
+    }));
   };
-
-  const handleHourlyVisible = () => {};
-
-  const handleEightDaysVisible = () => {};
 
   const handleDeleteCity = (id) => {
     setCities((prevCities) => prevCities.filter((city) => city.id !== id));
@@ -55,7 +52,8 @@ const DaysItems = () => {
       }
 
       return {
-        type: null,
+        // type: null,
+        visibleTypes: [],
         cityId: null,
       };
     });
@@ -101,9 +99,7 @@ const DaysItems = () => {
               city={city}
               onLike={handleLike}
               className="w-full mx-auto"
-              onVisibleCurrent={handleCurrentVisible}
-              onVisibleHourly={handleHourlyVisible}
-              onVisibleEightDays={handleEightDaysVisible}
+              onVisibleSection={handleChangeVisibility}
               onDeleteCity={handleDeleteCity}
             />
           </SwiperSlide>
