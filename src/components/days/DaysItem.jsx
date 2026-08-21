@@ -11,6 +11,7 @@ import { useCities } from "../../shared/contexts/citiesContext";
 import { RotateCw, CircleCheckBig } from "lucide";
 import { MorphIcon } from "morphicons/react";
 import { useIconActions } from "../../shared/hooks/useIconActions";
+import { HeartIcon } from "@animateicons/react/lucide";
 
 const DaysItem = ({
   city,
@@ -105,6 +106,7 @@ const DaysItem = ({
             onClick={() => onLike(city.id)}
           >
             <Heart
+            // {/* <HeartIcon size={24} color="#f45b48" */}
               className={cn(
                 "text-red-400 w-full h-full cursor-pointer select-none group-hover:scale-85 group-active:scale-75 transition-all duration-200",
                 city.isLiked && "fill-red-400 animate-like",
