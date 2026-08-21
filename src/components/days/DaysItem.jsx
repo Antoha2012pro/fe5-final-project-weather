@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Heart, RotateCw, Trash2 } from "lucide-react";
+import {
+  Heart,
+  // RotateCw,
+  Trash2,
+} from "lucide-react";
 import ButtonBrand from "../ui/ButtonBrand";
 import { cn } from "../../shared/utils/cn";
 import { weatherIcon } from "../../shared/utils/weatherIcons";
 import { useCities } from "../../shared/contexts/citiesContext";
+import { RotateCw, CircleCheckBig } from "lucide";
+import { MorphIcon } from "morphicons/react";
+import { useIconActions } from "../../shared/hooks/useIconActions";
 
 const DaysItem = ({
   city,
@@ -14,25 +21,13 @@ const DaysItem = ({
   onVisibleEightDays,
   onDeleteCity,
 }) => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { states, runAction } = useIconActions();
+
+  const refreshStatus = states.refresh ?? "idle";
 
   const { refreshCity } = useCities();
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  const handleRefresh = async () => {
-    if (isRefreshing) return;
-
-    setIsRefreshing(true);
-
-    try {
-      await Promise.all([refreshCity(city.id), delay(500)]);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
 
   return (
     <div
@@ -83,16 +78,25 @@ const DaysItem = ({
         <div className="flex gap-3.5 site-xl:gap-4 items-center">
           <button
             type="button"
-            disabled={isRefreshing}
+            disabled={refreshStatus === "loading"}
             className="group flex size-6 cursor-pointer items-center justify-center disabled:cursor-wait site-xl:size-7.5"
-            onClick={handleRefresh}
+            onClick={() =>
+              runAction(
+                "refresh",
+                () => Promise.all([refreshCity(city.id), delay(500)]),
+                800,
+              )
+            }
+            aria-label="Refresh weather"
           >
-            <RotateCw
+            <MorphIcon
+              icon={refreshStatus === "success" ? CircleCheckBig : RotateCw}
               className={cn(
                 "h-full w-full select-none text-black",
-                isRefreshing
+                refreshStatus === "loading"
                   ? "animate-spin [animation-duration:.5s]"
-                  : "transition-transform duration-200 group-hover:rotate-30",
+                  : "transition-transform duration-200",
+                refreshStatus !== "success" && "group-hover:rotate-30"
               )}
             />
           </button>

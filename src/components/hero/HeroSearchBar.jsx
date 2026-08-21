@@ -1,15 +1,22 @@
-import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useCities } from "../../shared/contexts/citiesContext";
 import { fetchCurrentWeather, searchCities } from "../../shared/api/owmApi.js";
 import { mapWeatherToCity } from "../../shared/utils/mapWeatherToCity.js";
+// import { Search } from "lucide-react";
+import { Search, X, RotateCw, CircleCheckBig } from "lucide";
+
+import { MorphIcon } from "morphicons/react";
 
 const HeroSearchBar = ({ onAddCity }) => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [open, setOpen] = useState(false);
+
   const { cities, maxCities } = useCities();
+
+  const isSearchActive = query.trim().length > 0;
 
   const handleSelectCity = async (city) => {
     try {
@@ -97,8 +104,21 @@ const HeroSearchBar = ({ onAddCity }) => {
           type="submit"
           disabled={isLoading || isLimitReached}
           className="flex w-7 site-md:w-9 site-xl:w-11.25 shrink-0 cursor-pointer items-center justify-center border-l-4 border-black bg-brand text-black hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 site-md:border-l-2"
+          onClick={() => {
+            if (isSearchActive) {
+              setQuery("");
+              setSearchResults([]);
+            } else {
+              setQuery("Kyiv");
+            }
+          }}
+          aria-label={isSearchActive ? "Clear search" : "Search Kyiv"}
         >
-          <Search className="size-3 site-md:size-4 site-xl:size-6.25 stroke-3 site-md:h-5 site-md:w-5" />
+          <MorphIcon
+            icon={isSearchActive ? X : Search}
+            className="size-3 site-md:size-5 site-xl:size-6"
+          />
+          {/* <Search className="size-3 site-md:size-4 site-xl:size-6.25 stroke-3 site-md:h-5 site-md:w-5" /> */}
         </button>
       </form>
 
